@@ -1,0 +1,245 @@
+/* =================================================================
+   ملف الأنماط: image-optimizer/image-optimizer.css
+   التعديل: تم حذف المتغيرات المحلية واستبدالها بالمتغيرات الأساسية
+   ================================================================= */
+
+/* ⛔️ تم حذف كتلة :root لأن المتغيرات الآن في core-styles/main.css 
+:root {
+    --linkC: #3b82f6; 
+    --contentB: #ffffff; 
+    --contentBa: #f8fafc; 
+    --contentL: #e2e8f0; 
+    --notifB: #f1f5f9; 
+    --notifC: #64748b; 
+    --headerC: #1e293b; 
+    --bodyC: #334155; 
+    --bodyB: #ffffff; 
+    --iconC: #64748b; 
+}
+*/
+
+.BoxTool {
+    position: relative;
+    padding: 16px;
+    border-radius: 8px;
+    /* استخدام: لون الحدود الموحد */
+    border: 1px solid var(--contentL); 
+    /* استخدام: لون خلفية المحتوى الموحد */
+    background: var(--contentB); 
+    margin-top: 20px;
+    box-shadow: 0 3px 9px -2px rgba(0,0,0,.2);
+}
+.BoxTool::before {
+    border-radius: 70px 0 0 0;
+    bottom: 0;
+    right: 0;
+    content: '';
+    width: 70px;
+    height: 70px;
+    position: absolute;
+    /* لون ظل خفيف بدلاً من لون ثابت */
+    background: var(--contentDa); 
+}
+.at_input {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    /* استخدام: لون الحدود الموحد */
+    border: 1px solid var(--contentL); 
+    /* استخدام: لون خلفية المحتوى الموحد (كانت --white-color) */
+    background: var(--contentB); 
+    /* استخدام: لون النص الثانوي الموحد (كانت --textColor) */
+    color: var(--bodyC); 
+    outline: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,.05);
+}
+.BoxTool hr {
+    border: none;
+    height: 1px;
+    /* استخدام: لون الروابط الموحد */
+    background: linear-gradient(to right, transparent, var(--linkC), transparent);
+    margin: 18px 0;
+}
+.button {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 6px 4px;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    /* استخدام: لون الروابط الموحد */
+    background: var(--linkC); 
+    cursor: pointer;
+    transition: background .3s;
+    /* تم توحيد لون النص ليكون أبيض (#fff) */
+    color: #fff; 
+}
+.button:hover {
+    /* استخدام: لون الروابط الداكن الموحد */
+    background: var(--linkDa); 
+}
+.button:active {
+    transform: scale(.97);
+}
+.button.secondary {
+    /* استخدام: لون نص الجسم الموحد (لأزرار ثانوية) */
+    background: var(--bodyC); 
+}
+.button.light {
+    /* استخدام: لون خلفية المحتوى الموحد (كانت --white-color) */
+    background: var(--contentB); 
+    /* استخدام: لون النص الثانوي الموحد (كانت --textColor) */
+    color: var(--bodyC); 
+    /* استخدام: لون الحدود الموحد */
+    border: 1px solid var(--contentL); 
+}
+.reset-btn {
+    /* استخدام: لون الخطر الموحد */
+    background: var(--dangerC) !important;
+}
+.drop-zone {
+    margin-top: 12px;
+    padding: 24px;
+    /* استخدام: لون الحدود الموحد */
+    border: 2px dashed var(--contentL);
+    border-radius: 8px;
+    /* استخدام: لون خلفية المحتوى الموحد (كانت --white-color) */
+    background: var(--contentB); 
+    text-align: center;
+    /* استخدام: لون النص الثانوي الموحد (كانت --textColor) */
+    color: var(--bodyC); 
+    font-size: 14px;
+    cursor: pointer;
+    transition: background .3s, border-color .3s;
+}
+.drop-zone.dragover {
+    /* استخدام: لون الروابط الخفيف الموحد */
+    background: var(--linkL);
+    /* استخدام: لون الروابط الموحد */
+    border-color: var(--linkC); 
+    /* استخدام: لون الروابط الموحد */
+    color: var(--linkC); 
+}
+.preview-panel {
+    margin-top: 20px;
+}
+.preview-title {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.preview-container {
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    /* استخدام: لون خلفية المحتوى الموحد (كانت --white-color) */
+    background: var(--contentB); 
+    /* استخدام: لون الحدود الموحد */
+    border: 1px solid var(--contentL); 
+    padding: 10px;
+    overflow: hidden;
+}
+#previewImg {
+    max-width: 100%;
+    max-height: 420px;
+    display: none;
+    border-radius: 6px;
+}
+#emptyPreview {
+    /* استخدام: لون النص الثانوي الموحد (كانت --textColor) */
+    color: var(--bodyC); 
+    opacity: .7;
+    font-size: 13px;
+}
+.size-info {
+    font-size: 13px;
+    margin-top: 10px;
+}
+.section-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.tool-footer {
+    margin-top: 24px;
+    padding: 14px 16px;
+    /* استخدام: لون الحدود الموحد */
+    border-top: 1px solid var(--contentL); 
+    text-align: center;
+    /* استخدام: لون خلفية المحتوى الموحد */
+    background: var(--contentB); 
+    border-radius: 0 0 8px 8px;
+}
+.tool-footer-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    /* استخدام: لون نص التنبيه الموحد (كان #475569) */
+    color: var(--notifC); 
+    flex-wrap: wrap;
+}
+.logo-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+.tool-footer-inner strong {
+    /* استخدام: لون الروابط الموحد */
+    color: var(--linkC); 
+}
+.heart {
+    /* تم ترك لون ثابت لرمز القلب لأنه عادة ما يكون أحمر بغض النظر عن النمط */
+    color: #e11d48; 
+    font-weight: 700;
+}
+.format-quality-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.size-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 10px;
+}
+.watermark-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+.upload-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+    align-items: flex-end;
+}
+.reset-btn-container {
+    text-align: right;
+}
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+.quality-value {
+    font-size: 13px;
+    margin-top: -8px;
+    margin-bottom: 12px;
+}
+/* الاستجابة لتناسب الشاشات الصغيرة */
+@media (max-width: 600px) {
+    .format-quality-grid, .size-controls, .watermark-controls, .upload-controls {
+        grid-template-columns: 1fr;
+    }
+}
