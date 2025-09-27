@@ -258,4 +258,3 @@ dropZone.addEventListener("dragover", (e => {
 })), wmBarBorderEnabled.addEventListener("change", (e => {
     wmBarBorderColorLabel.style.display = e.target.checked ? "block" : "none"
 })), downloadBtn.disabled = !0, previewOpenBtn.disabled = !0, wmTypeSelect.dispatchEvent(new Event("change")); // يتم تشغيل هذا لتطبيق إعدادات العلامة المائية الافتراضية عند التحميل
-
