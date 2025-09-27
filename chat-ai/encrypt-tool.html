@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أداة تشفير مفتاح API</title>
+    <style>
+        /* إزالة تعريف المتغيرات هنا والاعتماد على الأنماط الافتراضية للمتصفح أو إضافة main.css */
+        :root {
+            /* سنبقي هذه المتغيرات كقيم احتياطية إذا لم يتم تضمين main.css بشكل صحيح */
+            --linkC: #2563eb;
+            --contentB: #fff;
+            --contentDa: #f4f8ff; /* تم تغيير contentBa إلى contentDa للموائمة */
+            --contentL: #e3e7ef;
+            --white: #fff;
+            --bodyC: #222;
+            --trans-2: .2s ease-in-out;
+        }
+        body {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .modweeb-container {
+            position: fixed;
+            background: var(--contentB);
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            max-width: 90vw;
+            text-align: right;
+            border: 1px solid var(--contentL);
+        }
+        h1 {
+            text-align: center;
+            color: var(--bodyC);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--bodyC);
+            font-size: 14px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--contentL);
+            border-radius: 9px;
+            box-sizing: border-box;
+            text-align: right;
+            font-size: 12px;
+            color: var(--bodyC);
+            transition: border-color var(--trans-2);
+        }
+        input:focus {
+            border-color: var(--linkC);
+            outline: none;
+        }
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            background-color: var(--linkC);
+            color: var(--white);
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--trans-2);
+        }
+        button:hover {
+            background-color: #1e52c9; /* نترك هذا كقيمة ثابتة للون الأغمق، أو يمكن استبداله بمتغير لاحقاً */
+        }
+        #copyBtn {
+            background-color: #6c757d;
+        }
+        #copyBtn:hover {
+            background-color: #5a6268;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+        code {
+            background-color: var(--contentDa);
+            padding: 10px;
+            border-radius: 9px;
+            display: block;
+            overflow-x: auto;
+            text-align: left;
+            direction: ltr;
+            word-break: break-all;
+            border: 1px solid var(--contentL);
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="modweeb-container">
+        <h1>أداة تشفير مفتاح API</h1>
+        <label for="apiKeyInput">أدخل مفتاح API الخاص بك:</label>
+        <input type="text" id="apiKeyInput" placeholder="الصق مفتاحك هنا..." />
+        <div class="buttons-container">
+            <button onclick="encryptKey()">تشفير المفتاح</button>
+            <button id="copyBtn" onclick="copyEncryptedKey()">نسخ</button>
+        </div>
+        <div class="result-container">
+            <p>المفتاح المشفر:</p>
+            <code id="encryptedKeyOutput"></code>
+        </div>
+    </div>
+
+    <script>
+        function encryptKey() {
+            const apiKey = document.getElementById('apiKeyInput').value;
+            if (!apiKey) {
+                alert('الرجاء إدخال مفتاح API!');
+                return;
+            }
+            const encryptedKey = btoa(apiKey);
+            document.getElementById('encryptedKeyOutput').textContent = encryptedKey;
+        }
+
+        function copyEncryptedKey() {
+            const encryptedKey = document.getElementById('encryptedKeyOutput').textContent;
+            if (!encryptedKey) {
+                alert('لا يوجد شيء لنسخه!');
+                return;
+            }
+            navigator.clipboard.writeText(encryptedKey)
+                .then(() => {
+                    alert('تم نسخ المفتاح المشفر بنجاح!');
+                })
+                .catch(err => {
+                    alert('فشل النسخ: ' + err);
+                });
+        }
+    </script>
+</body>
+</html>
