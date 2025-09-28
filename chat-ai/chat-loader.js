@@ -1,6 +1,6 @@
 /**
- * ModWeeb Chat Loader - سكربت التحميل الذكي
- * إصدار 2.1.0 - يدعم المفتاح المشفر (Base64) عبر data-api-key
+ * ModWeeb Chat Loader - سكربت التحميل الذكي المُصحح
+ * إصدار 2.1.1 - يضمن التهيئة بعد تحميل ملف المنطق
  */
 
 class ModWeebChatLoader {
@@ -14,19 +14,17 @@ class ModWeebChatLoader {
         };
         
         this.loaded = false;
-        this.apiKey = this.getApiKeyFromScript(); // إضافة: قراءة المفتاح من السكربت
+        this.apiKey = this.getApiKeyFromScript();
         
         this.init();
     }
     
-    // وظيفة جديدة: قراءة المفتاح المشفر من data-api-key
     getApiKeyFromScript() {
         const script = document.currentScript;
         if (script) {
             const encryptedKey = script.getAttribute('data-api-key');
             if (encryptedKey) {
                 try {
-                    // فك التشفير Base64
                     return atob(encryptedKey);
                 } catch (e) {
                     console.error('ModWeeb Chat Error: Invalid Base64 API Key provided.');
@@ -39,6 +37,7 @@ class ModWeebChatLoader {
 
     init() {
         if (this.options.autoInit) {
+            // استخدام DOMContentLoaded لضمان تحميل الهيكل أولاً
             document.addEventListener('DOMContentLoaded', () => {
                 this.loadChat();
             });
@@ -48,7 +47,6 @@ class ModWeebChatLoader {
     loadChat() {
         if (this.loaded) return;
         
-        // التحقق من وجود مفتاح API قبل الاستمرار
         if (!this.apiKey) {
              console.error('ModWeeb Chat Error: API Key is missing or invalid. Widget loading stopped.');
              return;
@@ -56,25 +54,26 @@ class ModWeebChatLoader {
 
         const baseURL = `https://cdn.jsdelivr.net/gh/modweeb-widget/modweeb-tools@${this.options.version}/chat-ai`;
         
-        // تحميل CSS
+        // 1. تحميل CSS (لا يحتاج إلى انتظار)
         if (this.options.loadCSS) {
             this.loadCSS(`${baseURL}/modweeb-chat.css`);
         }
         
-        // تحميل JS
+        // 2. حقن هيكل الـ HTML
+        this.injectChatWidget();
+        
+        // 3. تحميل JS وتهيئة الدردشة (يحتاج لانتظار التحميل)
         if (this.options.loadJS) {
+            // نقوم بالتحميل ثم استدعاء initChat ضمن الـ callback
             this.loadJS(`${baseURL}/modweeb-chat.js`, () => {
-                this.injectChatWidget();
-                // تهيئة الدردشة بعد تحميل الـ JS
                 this.initChat({ hfToken: this.apiKey }); 
             });
-        } else {
-            this.injectChatWidget();
         }
         
         this.loaded = true;
     }
     
+    // ... (دالة loadCSS تبقى كما هي)
     loadCSS(url) {
         return new Promise((resolve, reject) => {
             const link = document.createElement('link');
@@ -85,9 +84,9 @@ class ModWeebChatLoader {
             document.head.appendChild(link);
         });
     }
-    
+
+    // ... (دالة loadJS تبقى كما هي)
     loadJS(url, callback) {
-        // ... (بقية الدالة كما هي)
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = url;
@@ -100,8 +99,8 @@ class ModWeebChatLoader {
         });
     }
     
+    // ... (دالة injectChatWidget تبقى كما هي)
     injectChatWidget() {
-        // إنشاء زر الدردشة
         const chatBtn = document.createElement('button');
         chatBtn.id = 'modweeb-chat-btn';
         chatBtn.type = 'button';
@@ -110,16 +109,15 @@ class ModWeebChatLoader {
         chatBtn.title = 'ابدأ دردشة AI';
         chatBtn.innerHTML = this.getChatIcon();
         
-        // إنشاء حاوية الدردشة
         const widgetContainer = document.createElement('div');
         widgetContainer.id = 'modweeb-widget-container';
         widgetContainer.innerHTML = this.getChatHTML();
         
-        // إضافة العناصر إلى الصفحة
         document.body.appendChild(chatBtn);
         document.body.appendChild(widgetContainer);
     }
     
+    // ... (getChatIcon و getChatHTML تبقى كما هي)
     getChatIcon() {
         return `<svg class="modweeb-svg-btn-n" viewBox="0 0 24 24">
             <path d="M21.49 12C21.81 10.98 22 9.88 22 8.69C22 5.6 19.51 3.09998 16.44 3.09998C14.62 3.09998 13.01 3.98003 12 5.34003C10.99 3.98003 9.37 3.09998 7.56 3.09998C4.49 3.09998 2 5.6 2 8.69C2 15.69 8.48 19.82 11.38 20.82C11.55 20.88 11.77 20.91 12 20.91"></path>
@@ -186,8 +184,8 @@ class ModWeebChatLoader {
         </div>`;
     }
     
-    // طريقة لتهيئة الدردشة يدويًا
     initChat(config) {
+        // التأكد من أن دالة modweebChat قد تم تحميلها
         if (typeof modweebChat === 'function') {
             modweebChat({
                 config: {
@@ -196,15 +194,14 @@ class ModWeebChatLoader {
                 }
             });
         } else {
-            console.error('ModWeeb Chat not loaded yet');
+            // رسالة تحذير إذا لم يتم العثور على الدالة
+            console.error('ModWeeb Chat Error: modweeb-chat.js failed to load or define modweebChat function.');
         }
     }
 }
 
-// التصدير للاستخدام العالمي
 window.ModWeebChatLoader = ModWeebChatLoader;
 
-// التحميل التلقائي إذا كان مطلوبًا
 if (window.modweebChatAutoLoad !== false) {
     new ModWeebChatLoader();
 }
