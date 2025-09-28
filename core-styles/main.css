@@ -15,42 +15,9 @@
     --lContentL: #e5e7eb;       /* (افتراضي: لون الحدود الفاتح) */
     --lHeaderC: #1e1e1e;        /* (افتراضي: لون العناوين) */
 
-
+}
     /* ================================================= */
     /* 2. متغيرات الأدوات الموحدة (المستخدمة في Chat/Image Optimizer) */
     /* ================================================= */
     
-    /* الألوان الأساسية */
-    --linkC: var(--lLinkC, #1e40ff);             /* لون الروابط/الأساسي للأزرار */
-    --bodyC: var(--lBodyC, #1e1e1e);             /* لون نص الجسم العام */
-    --bodyCa: var(--lBodyCa, #6b7280);           /* لون النص الثانوي (خافت) */
-    --headC: var(--lHeaderC, var(--bodyC));      /* لون العناوين/رأس الأداة */
-
-    /* ألوان الخلفيات والحدود */
-    --contentB: var(--lContentB, #ffffff);       /* خلفية الأداة الرئيسية */
-    --borderC: var(--lContentL, #e5e7eb);        /* لون الحدود العام */
-    --contentDa: var(--contentBs, #f3f4f6);      /* خلفية الحقول/الهوفر الخفيف */
-    --hoverB: var(--contentDa);                  /* خلفية تأثير الهوفر */
-
-    /* الألوان الوظيفية */
-    --iconC: var(--headC);                       /* لون الأيقونات (عادةً نفس لون العناوين/النص) */
-    --dangerC: #dc2626;                          /* لون الأخطاء/إعادة الضبط */
-    --infoB: #eef4ff;                            /* خلفية شريط المعلومات */
-
-    /* ألوان ثابتة */
-    --white: #fffdfc;
-    --black: #1e1e1e;
     
-    /* Transition */
-    --trans-2: all .2s ease;
-
-    /* الخطوط - تم تصحيح تعريف خطوط القالب */
-    --fontS: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
-    /* نستخدم خطوط القالب مع توفير قيمة احتياطية (Fallback) */
-    --fontH: var(--fontH, var(--fontS));          /* خط العناوين */
-    --fontB: var(--fontB, var(--fontS));          /* خط الجسم */
-}
-
-/* ------------------------------------------- */
-/* 2. الوضع الداكن (Dark Mode) - إعادة تعريف متغيرات الأدوات */
-/* ------------------------------------------- */
