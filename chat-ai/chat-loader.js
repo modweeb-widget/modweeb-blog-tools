@@ -1,6 +1,6 @@
 /**
  * ModWeeb Chat Loader - سكربت التحميل الذكي
- * إصدار 2.0.0 - متوافق مع نظام ModWeeb الموحد
+ * إصدار 2.1.0 - يدعم المفتاح المشفر (Base64) عبر data-api-key
  */
 
 class ModWeebChatLoader {
@@ -14,9 +14,29 @@ class ModWeebChatLoader {
         };
         
         this.loaded = false;
+        this.apiKey = this.getApiKeyFromScript(); // إضافة: قراءة المفتاح من السكربت
+        
         this.init();
     }
     
+    // وظيفة جديدة: قراءة المفتاح المشفر من data-api-key
+    getApiKeyFromScript() {
+        const script = document.currentScript;
+        if (script) {
+            const encryptedKey = script.getAttribute('data-api-key');
+            if (encryptedKey) {
+                try {
+                    // فك التشفير Base64
+                    return atob(encryptedKey);
+                } catch (e) {
+                    console.error('ModWeeb Chat Error: Invalid Base64 API Key provided.');
+                    return null;
+                }
+            }
+        }
+        return null;
+    }
+
     init() {
         if (this.options.autoInit) {
             document.addEventListener('DOMContentLoaded', () => {
@@ -28,6 +48,12 @@ class ModWeebChatLoader {
     loadChat() {
         if (this.loaded) return;
         
+        // التحقق من وجود مفتاح API قبل الاستمرار
+        if (!this.apiKey) {
+             console.error('ModWeeb Chat Error: API Key is missing or invalid. Widget loading stopped.');
+             return;
+        }
+
         const baseURL = `https://cdn.jsdelivr.net/gh/modweeb-widget/modweeb-tools@${this.options.version}/chat-ai`;
         
         // تحميل CSS
@@ -39,6 +65,8 @@ class ModWeebChatLoader {
         if (this.options.loadJS) {
             this.loadJS(`${baseURL}/modweeb-chat.js`, () => {
                 this.injectChatWidget();
+                // تهيئة الدردشة بعد تحميل الـ JS
+                this.initChat({ hfToken: this.apiKey }); 
             });
         } else {
             this.injectChatWidget();
@@ -59,6 +87,7 @@ class ModWeebChatLoader {
     }
     
     loadJS(url, callback) {
+        // ... (بقية الدالة كما هي)
         return new Promise((resolve, reject) => {
             const script = document.createElement('script');
             script.src = url;
