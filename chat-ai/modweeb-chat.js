@@ -1,5 +1,16 @@
+function decodeToken(token) {
+    if (token && token.startsWith('hf_')) {
+        return token;
+    }
+    try {
+        return atob(token);
+    } catch (e) {
+        console.error('خطأ في فك تشفير المفتاح:', e);
+        return token;
+    }
+}
 function modweebChat(options) {
-    const HUGGING_FACE_TOKEN = options.config.hfToken;
+    const HUGGING_FACE_TOKEN = decodeToken(options.config.hfToken);
     const HUGGING_FACE_MODEL = options.config.hfModel;
     const USAGE_KEY = "modweebChatUsage_v1",
           HISTORY_KEY = "modweebChatHistory_v1",
