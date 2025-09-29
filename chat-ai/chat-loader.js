@@ -1,50 +1,22 @@
 /**
  * ModWeeb Chat Loader - سكربت التحميل الذكي
- * إصدار 3.0.0 - يدعم المفتاح المشفر (Base64) عبر data-key
+ * إصدار 2.0.0 - متوافق مع نظام ModWeeb الموحد
  */
 
 class ModWeebChatLoader {
     constructor(options = {}) {
-        // قراءة المفتاح المشفر والمُعدّل من وسم السكربت الحالي
-        this.apiKey = this.getApiKeyFromScript(); 
-        
         this.options = {
             autoInit: true,
             loadCSS: true,
             loadJS: true,
-            version: 'main', // يمكن تغييرها للإصدارات التجريبية
+            version: 'main',
             ...options
         };
         
         this.loaded = false;
-        
-        // إذا كان المفتاح غير صالح، لن يتم التهيئة
-        if (this.apiKey) {
-            this.init();
-        } else {
-            console.error('ModWeeb Chat: Failed to load API Key. Widget load aborted.');
-        }
+        this.init();
     }
     
-    // وظيفة جديدة: قراءة المفتاح المشفر من data-key وفك تشفيره
-    getApiKeyFromScript() {
-        // استخدام document.currentScript لضمان قراءة الخاصية من وسم السكربت الذي استدعانا
-        const script = document.currentScript;
-        if (script) {
-            const encryptedKey = script.getAttribute('data-key');
-            if (encryptedKey) {
-                try {
-                    // 🔑 فك التشفير Base64 باستخدام atob
-                    return atob(encryptedKey);
-                } catch (e) {
-                    console.error('ModWeeb Chat Error: Invalid Base64 API Key format in data-key attribute.');
-                    return null;
-                }
-            }
-        }
-        return null;
-    }
-
     init() {
         if (this.options.autoInit) {
             document.addEventListener('DOMContentLoaded', () => {
@@ -67,8 +39,6 @@ class ModWeebChatLoader {
         if (this.options.loadJS) {
             this.loadJS(`${baseURL}/modweeb-chat.js`, () => {
                 this.injectChatWidget();
-                // تهيئة الدردشة باستخدام المفتاح المفكوك
-                this.initChat({ hfToken: this.apiKey }); 
             });
         } else {
             this.injectChatWidget();
@@ -130,7 +100,6 @@ class ModWeebChatLoader {
     }
     
     getChatHTML() {
-        // ... (محتوى HTML للودجت يبقى كما هو لضمان الأنماط)
         return `<div id="modweeb-chat-container" role="dialog" aria-label="دردشة الذكاء الاصطناعي">
             <div id="modweeb-status" aria-live="polite"></div>
             <div class="modweeb-head" id="modweeb-head">
@@ -182,8 +151,8 @@ class ModWeebChatLoader {
                         <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"></path>
                         <path d="M9.16998 14.83L14.83 9.17004"></path>
                         <path d="M14.83 14.83L9.16998 9.17004"></path>
-                        </svg>
-                    </button>
+                    </svg>
+                </button>
             </div>
         </div>`;
     }
@@ -198,8 +167,7 @@ class ModWeebChatLoader {
                 }
             });
         } else {
-            // ملاحظة: هذا الخطأ لا ينبغي أن يحدث في السيناريو العادي
-            console.error('ModWeeb Chat (modweeb-chat.js) not loaded yet. Check the path.');
+            console.error('ModWeeb Chat not loaded yet');
         }
     }
 }
@@ -208,7 +176,6 @@ class ModWeebChatLoader {
 window.ModWeebChatLoader = ModWeebChatLoader;
 
 // التحميل التلقائي إذا كان مطلوبًا
-// يمكن للمستخدم ضبط window.modweebChatAutoLoad = false; لإيقاف التشغيل التلقائي
 if (window.modweebChatAutoLoad !== false) {
     new ModWeebChatLoader();
 }
